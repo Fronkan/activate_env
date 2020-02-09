@@ -6,19 +6,19 @@ from argparse import ArgumentParser
 import signal
 
 
-def handle_sigint(*args):
-    """Makes output cleaner sent SIGINT (ctrl-c)"""
-    with stderr_as_out():
-        print("")
-    sys.exit(-1)
-
-
 @contextmanager
 def stderr_as_out():
     stdout = sys.stdout
     sys.stdout = sys.stderr
     yield
     sys.stdout = stdout
+
+
+def handle_sigint(*args):
+    """Makes output cleaner sent SIGINT (ctrl-c)"""
+    with stderr_as_out():
+        print("")
+    sys.exit(-1)
 
 
 def find_envs(cur_dir: Path, recusive: bool = False) -> List[Path]:
