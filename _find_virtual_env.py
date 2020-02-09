@@ -3,6 +3,14 @@ from pathlib import Path
 from contextlib import contextmanager
 from typing import List
 from argparse import ArgumentParser
+import signal
+
+
+def handle_sigint(*args):
+    """Makes output cleaner sent SIGINT (ctrl-c)"""
+    with stderr_as_out():
+        print("")
+    sys.exit(-1)
 
 
 @contextmanager
@@ -18,9 +26,12 @@ def find_envs(cur_dir: Path, recusive: bool = False) -> List[Path]:
     return [env_path for env_path in cur_dir.glob(search_pattern)]
 
 
-def print_envs(envs: List[str]) -> None:
+def print_envs(envs: List[Path]) -> None:
+    max_name_len = max([len(env.parent.parent.name) for env in envs])
     for idx, env in enumerate(envs):
-        print(f"[{idx}]: {env}")
+        env_dir = env.parent.parent
+        name_str = f"({env_dir.name})"
+        print(f"[{idx}]: {name_str:^{max_name_len+3}} - {env_dir}")
 
 
 def ask_user_to_choose_env(envs: List[Path]) -> Path:
@@ -43,6 +54,7 @@ def ask_user_to_choose_env(envs: List[Path]) -> Path:
 
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, handle_sigint)
     parser = ArgumentParser(
         prog="activate",
         description="""
