@@ -18,8 +18,8 @@ assert install_dir.is_dir(), "The installation path must be a directory"
 activate_env_dir = Path(__file__).parent
 
 files = [
-    activate_env_dir / "activate.bat",
-    activate_env_dir / "activate.ps1",
+    activate_env_dir / "activate_env.bat",
+    activate_env_dir / "activate_env.ps1",
     activate_env_dir / "_find_virtual_env.py",
 ]
 
