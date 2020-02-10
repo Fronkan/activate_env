@@ -18,11 +18,11 @@ def handle_sigint(*args):
     """Makes output cleaner sent SIGINT (ctrl-c)"""
     with stderr_as_out():
         print("")
-    sys.exit(-1)
+    sys.exit(1)
 
 
-def find_envs(cur_dir: Path, recusive: bool = False) -> List[Path]:
-    search_pattern = "**/Scripts/activate" if recusive else "*/Scripts/activate"
+def find_envs(cur_dir: Path, recursive: bool = False) -> List[Path]:
+    search_pattern = "**/Scripts/activate" if recursive else "*/Scripts/activate"
     return [env_path for env_path in cur_dir.glob(search_pattern)]
 
 
@@ -75,11 +75,11 @@ if __name__ == "__main__":
         # This would break the ps1/bat files which uses this script
         args = parser.parse_args()
 
-        envs = find_envs(cur_dir=Path("."), recusive=args.recursive)
+        envs = find_envs(cur_dir=Path("."), recursive=args.recursive)
 
         if not envs:
             print("No virtual envs found")
-            exit(-1)
+            exit(1)
         elif len(envs) > 1:
             print_envs(envs)
             env = ask_user_to_choose_env(envs)
@@ -88,3 +88,4 @@ if __name__ == "__main__":
 
     # Write env to stdout for the wrapping shell scripts to grab it
     print(str(env))
+    exit(0)
