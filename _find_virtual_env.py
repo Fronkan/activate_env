@@ -60,7 +60,7 @@ if __name__ == "__main__":
         description="""
             Activates a virtual environment if found in the current directory. 
             If multiple are found the user may choose the environment. 
-            All user-comunication is written through stderr to not conflict with calling programms.
+            All user-communication is written through stderr to not conflict with calling programs.
         """.strip(),
     )
     parser.add_argument(
